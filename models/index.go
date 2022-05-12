@@ -11,10 +11,12 @@ import (
 
 func ConnectDatabase() {
 	dsn := os.Getenv("DSN")
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
-	if _, err := gorm.Open(postgres.Open(dsn), &gorm.Config{}); err != nil {
+	if err != nil {
 		log.Fatal("Database connection failed:", err)
 	}
+	db.AutoMigrate(&Schedule{})
 
 	log.Println("Database connected")
 }
