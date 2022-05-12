@@ -35,6 +35,7 @@ func main() {
     return services.HookEntryHandler(ctx)
   })
 
+  log.Println("Server starts at port", port)
   if err := app.Listen(fmt.Sprint(":", port)); err != nil {
     log.Fatal("Server start error", err)
   }
