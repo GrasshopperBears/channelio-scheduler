@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
+	"server/services"
 
 	"github.com/gofiber/fiber/v2"
 
@@ -19,14 +21,16 @@ func initialize() {
 func main() {
   initialize()
   app := fiber.New()
+  port := os.Getenv("PORT")
+  if len(port) == 0 { port = "4000" }
 
   app.Post("/", func(ctx *fiber.Ctx) error {
     if ctx.Query("token") != os.Getenv("TOKEN") {
       log.Println("Request with different token")
-      return ctx.SendStatus(400)
+      return ctx.SendStatus(200)
     }
-    return ctx.SendString("Hello, World!")
+    return services.HookEntryHandler(ctx)
   })
 
-  app.Listen(":4000")
+  app.Listen(fmt.Sprint(":", port))
 }
