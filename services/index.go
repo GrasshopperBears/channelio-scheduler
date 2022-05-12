@@ -3,6 +3,7 @@ package services
 import (
 	"log"
 	"server/structs"
+	"server/utils"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
@@ -23,5 +24,10 @@ func HookEntryHandler(ctx *fiber.Ctx) error {
 		return ctx.SendStatus(200)
 	}
 
-	return ctx.SendString("Hello, World!")
+	requestType := utils.GetRequestType(event.Entity.PlainText)
+	if requestType == structs.REQUEST_ADD { return AddSchedule(ctx, event) }
+	if requestType == structs.REQUEST_GET { return GetSchedule(ctx, event) }
+	if requestType == structs.REQUEST_DELETE { return DeleteSchedule(ctx, event) }
+
+	return ctx.SendStatus(200)
 }
