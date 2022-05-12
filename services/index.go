@@ -3,13 +3,12 @@ package services
 import (
 	"log"
 	"server/structs"
+	"server/texts"
 	"server/utils"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
 )
-
-const MSG_PREFIX = "-일정"
 
 func HookEntryHandler(ctx *fiber.Ctx) error {
 	event := new(structs.WebhookEvent)
@@ -20,7 +19,7 @@ func HookEntryHandler(ctx *fiber.Ctx) error {
 	}
 
 	event.Entity.PlainText = strings.TrimSpace(event.Entity.PlainText)
-	if !strings.HasPrefix(event.Entity.PlainText, MSG_PREFIX) {
+	if !strings.HasPrefix(event.Entity.PlainText, texts.SCHEDULER_PREFIX) {
 		return ctx.SendStatus(200)
 	}
 
