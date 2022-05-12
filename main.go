@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"server/models"
 	"server/services"
 
 	"github.com/gofiber/fiber/v2"
@@ -16,6 +17,8 @@ func initialize() {
   if err != nil {
     log.Fatal("Environment configuration failed.")
   }
+
+  models.ConnectDatabase()
 }
 
 func main() {
@@ -32,5 +35,7 @@ func main() {
     return services.HookEntryHandler(ctx)
   })
 
-  app.Listen(fmt.Sprint(":", port))
+  if err := app.Listen(fmt.Sprint(":", port)); err != nil {
+    log.Fatal("Server start error", err)
+  }
 }
