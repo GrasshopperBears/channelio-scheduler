@@ -1,12 +1,9 @@
 package services
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"server/structs"
 	"server/utils"
 
@@ -15,13 +12,12 @@ import (
 
 func HelpSchedule(ctx *fiber.Ctx, event *structs.WebhookEvent) error {
 	block := structs.Block{Type: "text", Value: utils.MESSAGE_HELP}
-	bodyBytes, _ := json.Marshal(
+	body := utils.HttpBodyBuilder(
 		structs.Message{
 			Blocks: []structs.Block{block},
 			Options: []string{"silent"},
 		},
 	)
-	body := bytes.NewBuffer(bodyBytes)
 
 	client := http.Client{}
 	url := fmt.Sprintf("https://api.channel.io/open/v5/%ss/%s/messages", event.Entity.ChatType, event.Entity.ChatId)
@@ -36,11 +32,7 @@ func HelpSchedule(ctx *fiber.Ctx, event *structs.WebhookEvent) error {
 	query.Add("botName", "도움말봇")
 	req.URL.RawQuery = query.Encode()
 
-	req.Header = http.Header{
-		"Content-Type": []string{"application/json"},
-		"x-access-key": []string{os.Getenv("OPEN_API_ACCESS_KEY")},
-		"x-access-secret": []string{os.Getenv("OPEN_API_ACCESS_SECRET")},
-	}
+	utils.SetChannelApiHeader(req)
 
 	_, err = client.Do(req)
 	if err != nil {
