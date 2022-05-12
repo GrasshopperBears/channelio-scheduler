@@ -5,13 +5,14 @@ import (
 	"log"
 	"net/http"
 	"server/structs"
+	"server/texts"
 	"server/utils"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func HelpSchedule(ctx *fiber.Ctx, event *structs.WebhookEvent) error {
-	block := structs.Block{Type: "text", Value: utils.MESSAGE_HELP}
+	block := structs.Block{Type: "text", Value: texts.MESSAGE_HELP}
 	body := utils.HttpBodyBuilder(
 		structs.Message{
 			Blocks: []structs.Block{block},

@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"server/structs"
+	"server/texts"
 	"server/utils"
 
 	"github.com/gofiber/fiber/v2"
@@ -12,7 +13,7 @@ import (
 
 
 func ErrorSchedule(ctx *fiber.Ctx, event *structs.WebhookEvent) error {
-	block := structs.Block{Type: "text", Value: utils.MESSAGE_WRONG_FORMAT}
+	block := structs.Block{Type: "text", Value: texts.MESSAGE_WRONG_FORMAT}
 	body := utils.HttpBodyBuilder(
 		structs.Message{
 			Blocks: []structs.Block{block},
