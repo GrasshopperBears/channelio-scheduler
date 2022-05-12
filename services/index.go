@@ -29,6 +29,7 @@ func HookEntryHandler(ctx *fiber.Ctx) error {
 	if requestType == structs.REQUEST_GET { return GetSchedule(ctx, event) }
 	if requestType == structs.REQUEST_DELETE { return DeleteSchedule(ctx, event) }
 	if requestType == structs.REQUEST_ERROR { return ErrorSchedule(ctx, event) }
+	if requestType == structs.REQUEST_HELP { return HelpSchedule(ctx, event) }
 
 	return ctx.SendStatus(200)
 }
