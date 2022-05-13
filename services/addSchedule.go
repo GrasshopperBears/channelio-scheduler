@@ -14,12 +14,12 @@ import (
 	"gorm.io/gorm"
 )
 
-var regex = regexp.MustCompile(texts.SCHEDULER_PREFIX + " +" + texts.SCHEDULER_ADD + "(?: +(?P<year>[0-9]{4})년)? +(?P<month>[0-9]{1,2})월 +(?P<date>[0-9]{1,2})일 +(?P<hour>[0-9]{1,2})시 +(?P<minute>[0-9]{1,2})분 (?P<title>.+)")
+var addRegex = regexp.MustCompile(texts.SCHEDULER_PREFIX + " +" + texts.SCHEDULER_ADD + "(?: +(?P<year>[0-9]{4})년)? +(?P<month>[0-9]{1,2})월 +(?P<date>[0-9]{1,2})일 +(?P<hour>[0-9]{1,2})시 +(?P<minute>[0-9]{1,2})분 (?P<title>.+)")
 
 func AddSchedule(ctx *fiber.Ctx, event *structs.WebhookEvent) error {
 	db := models.DB
-	match := regex.FindStringSubmatch(event.Entity.PlainText)
-	parseMap := utils.ParseRegexFind(regex, match)
+	match := addRegex.FindStringSubmatch(event.Entity.PlainText)
+	parseMap := utils.ParseRegexFind(addRegex, match)
 
 	year, _ := strconv.Atoi(parseMap["year"])
 	month, _ := strconv.Atoi(parseMap["month"])
