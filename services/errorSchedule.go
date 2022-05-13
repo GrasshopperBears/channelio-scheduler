@@ -31,7 +31,7 @@ func ErrorSchedule(ctx *fiber.Ctx, event *structs.WebhookEvent) error {
 	}
 
 	query := req.URL.Query()
-	query.Add("botName", "에러봇")
+	query.Add("botName", texts.BOT_NAME)
 	req.URL.RawQuery = query.Encode()
 
 	utils.SetChannelApiHeader(req)
