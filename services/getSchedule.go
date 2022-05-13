@@ -6,6 +6,7 @@ import (
 	"server/models"
 	"server/structs"
 	"server/texts"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -30,7 +31,7 @@ func GetSchedule(ctx *fiber.Ctx, event *structs.WebhookEvent) error {
 	var blocks []structs.Block
 	var ids []string
 
-	if result := db.Where("channel_id = ?", event.Entity.ChatId).Order("datetime").Find(&schedules); result.Error != nil {
+	if result := db.Where("channel_id = ? AND datetime > ?", event.Entity.ChatId, time.Now()).Order("datetime").Find(&schedules); result.Error != nil {
 		log.Println("Error:", result.Error)
 		return ctx.SendStatus(500)
 	}
