@@ -49,5 +49,8 @@ func AddSchedule(ctx *fiber.Ctx, event *structs.WebhookEvent) error {
 
 	log.Println("Schedule created")
 
+	block := structs.Block{Type: "text", Value: texts.MESSAGE_ADD_SUCCESS}
+	_ = PostChannelMessage([]structs.Block{block}, []string{"silent"}, event.Entity.ChatType, event.Entity.ChatId)
+
 	return ctx.SendStatus(200)
 }

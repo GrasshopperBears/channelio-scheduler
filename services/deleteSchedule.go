@@ -88,5 +88,8 @@ func DeleteSchedule(ctx *fiber.Ctx, event *structs.WebhookEvent) error {
 
 	println("Schedule deleted")
 
+	block := structs.Block{Type: "text", Value: texts.MESSAGE_DELETE_SUCCESS}
+	_ = PostChannelMessage([]structs.Block{block}, []string{"silent"}, event.Entity.ChatType, event.Entity.ChatId)
+
 	return ctx.SendStatus(200)
 }
