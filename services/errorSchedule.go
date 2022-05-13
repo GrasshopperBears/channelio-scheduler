@@ -14,7 +14,7 @@ func ErrorSchedule(ctx *fiber.Ctx, event *structs.WebhookEvent) error {
 
 	if err := PostChannelMessage([]structs.Block{block}, []string{"silent"},
 																event.Entity.ChatType, event.Entity.ChatId); err != nil {
-		log.Println("Error:", err)
+		log.Println("API error:", err)
 		return ctx.SendStatus(500)
 	}
 

@@ -31,8 +31,8 @@ func GetSchedule(ctx *fiber.Ctx, event *structs.WebhookEvent) error {
 	var blocks []structs.Block
 	var ids []string
 
-	if result := db.Where("channel_id = ? AND datetime > ?", event.Entity.ChatId, time.Now()).Order("datetime").Find(&schedules); result.Error != nil {
-		log.Println("Error:", result.Error)
+	if err := db.Where("channel_id = ? AND datetime > ?", event.Entity.ChatId, time.Now()).Order("datetime").Find(&schedules).Error; err != nil {
+		log.Println("Database error:", err)
 		return ctx.SendStatus(500)
 	}
 	for i := 0; i < len(schedules); i++ {
@@ -67,7 +67,7 @@ func GetSchedule(ctx *fiber.Ctx, event *structs.WebhookEvent) error {
 
 	if err := PostChannelMessage(blocks, []string{"silent"},
 																event.Entity.ChatType, event.Entity.ChatId); err != nil {
-		log.Println("Error:", err)
+		log.Println("API error:", err)
 		return ctx.SendStatus(500)
 	}
 
