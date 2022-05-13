@@ -4,10 +4,11 @@ go 1.18
 
 require (
 	github.com/gofiber/fiber/v2 v2.33.0 // direct
+	github.com/google/uuid v1.3.0 //direct
 	github.com/joho/godotenv v1.4.0 // direct
 	gorm.io/driver/postgres v1.3.5 // direct
 	gorm.io/gorm v1.23.5 // direct
-	github.com/google/uuid v1.3.0 //direct
+	github.com/lib/pq v1.10.5 // direct
 )
 
 require (
