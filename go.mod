@@ -7,11 +7,11 @@ require (
 	github.com/joho/godotenv v1.4.0 // direct
 	gorm.io/driver/postgres v1.3.5 // direct
 	gorm.io/gorm v1.23.5 // direct
+	github.com/google/uuid v1.3.0 //direct
 )
 
 require (
 	github.com/andybalholm/brotli v1.0.4 // indirect
-	github.com/google/uuid v1.3.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.12.1 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
