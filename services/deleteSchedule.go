@@ -25,7 +25,7 @@ func DeleteSchedule(ctx *fiber.Ctx, event *structs.WebhookEvent) error {
 	deleteIdx, err := strconv.Atoi(parseMap["idx"])
 
 	if err != nil {
-		block := structs.Block{Type: "text", Value: "유효하지 않은 명령어입니다."}
+		block := structs.Block{Type: "text", Value: texts.MESSAGE_WRONG_FORMAT}
 		if err := PostChannelMessage([]structs.Block{block}, []string{"silent"},
 															event.Entity.ChatType, event.Entity.ChatId); err != nil {
 			log.Println("API error:", err)
@@ -41,8 +41,17 @@ func DeleteSchedule(ctx *fiber.Ctx, event *structs.WebhookEvent) error {
 			return err
 		}
 
+		if len(getScheduleHistory.Result) == 0 {
+			block := structs.Block{Type: "text", Value: texts.MESSAGE_DELETE_BEFORE_GET}
+			if err := PostChannelMessage([]structs.Block{block}, []string{"silent"},
+																event.Entity.ChatType, event.Entity.ChatId); err != nil {
+				return errors.New("")
+			}
+			errFlag = true
+			return errors.New("")
+		}
 		if len(getScheduleHistory.Result) < deleteIdx {
-			block := structs.Block{Type: "text", Value: "일정 조회 후 삭제할 수 있습니다."}
+			block := structs.Block{Type: "text", Value: texts.MESSAGE_WRONG_FORMAT}
 			if err := PostChannelMessage([]structs.Block{block}, []string{"silent"},
 																event.Entity.ChatType, event.Entity.ChatId); err != nil {
 				return errors.New("")
@@ -58,7 +67,7 @@ func DeleteSchedule(ctx *fiber.Ctx, event *structs.WebhookEvent) error {
 			errFlag = true
 			return result.Error
 		} else if result.RowsAffected == 0 {
-			block := structs.Block{Type: "text", Value: "존재하지 않는 일정입니다."}
+			block := structs.Block{Type: "text", Value: texts.MESSAGE_DELETE_BEFORE_GET}
 			if err := PostChannelMessage([]structs.Block{block}, []string{"silent"},
 																event.Entity.ChatType, event.Entity.ChatId); err != nil {
 				return errors.New("")
