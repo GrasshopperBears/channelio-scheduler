@@ -18,6 +18,7 @@ func ConnectDatabase() {
 		log.Fatal("Database connection failed:", err)
 	}
 	openedDb.AutoMigrate(&Schedule{})
+	openedDb.AutoMigrate(&GetScheduleHistory{})
 	DB = openedDb
 
 	log.Println("Database connected")
