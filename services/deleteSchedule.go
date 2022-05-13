@@ -18,7 +18,6 @@ import (
 var deleteRegex = regexp.MustCompile(texts.SCHEDULER_PREFIX + " +" + texts.SCHEDULER_DELETE + " (?P<idx>[0-9]+)")
 
 func DeleteSchedule(ctx *fiber.Ctx, event *structs.WebhookEvent) error {
-	errFlag := false
 	db := models.DB
 	match := deleteRegex.FindStringSubmatch(event.Entity.PlainText)
 	parseMap := utils.ParseRegexFind(deleteRegex, match)
@@ -33,11 +32,10 @@ func DeleteSchedule(ctx *fiber.Ctx, event *structs.WebhookEvent) error {
 		return ctx.SendStatus(500)
 	}
 
-	db.Transaction(func(tx *gorm.DB) error {
+	err = db.Transaction(func(tx *gorm.DB) error {
 		var getScheduleHistory models.GetScheduleHistory
 		if err := tx.Where("channel_id = ? AND person_id = ?", event.Entity.ChatId, event.Entity.PersonId).Limit(1).Find(&getScheduleHistory).Error; err != nil {
 			log.Println("Database error:", err)
-			errFlag = true
 			return err
 		}
 
@@ -47,16 +45,14 @@ func DeleteSchedule(ctx *fiber.Ctx, event *structs.WebhookEvent) error {
 																event.Entity.ChatType, event.Entity.ChatId); err != nil {
 				return errors.New("")
 			}
-			errFlag = true
 			return errors.New("")
 		}
 		if len(getScheduleHistory.Result) < deleteIdx {
-			block := structs.Block{Type: "text", Value: texts.MESSAGE_WRONG_FORMAT}
+			block := structs.Block{Type: "text", Value: texts.MESSAGE_SCHEDULE_NOT_FOUND}
 			if err := PostChannelMessage([]structs.Block{block}, []string{"silent"},
 																event.Entity.ChatType, event.Entity.ChatId); err != nil {
 				return errors.New("")
 			}
-			errFlag = true
 			return errors.New("")
 		}
 		deleteScheduleId := getScheduleHistory.Result[deleteIdx - 1]
@@ -64,7 +60,6 @@ func DeleteSchedule(ctx *fiber.Ctx, event *structs.WebhookEvent) error {
 
 		result := tx.Where("id = ? and channel_id = ?", uuid.MustParse(deleteScheduleId), event.Entity.ChatId).Limit(1).Find(&deleteSchedule)
 		if result.Error != nil {
-			errFlag = true
 			return result.Error
 		} else if result.RowsAffected == 0 {
 			block := structs.Block{Type: "text", Value: texts.MESSAGE_DELETE_BEFORE_GET}
@@ -72,25 +67,22 @@ func DeleteSchedule(ctx *fiber.Ctx, event *structs.WebhookEvent) error {
 																event.Entity.ChatType, event.Entity.ChatId); err != nil {
 				return errors.New("")
 			}
-			errFlag = true
 			return result.Error
 		}
 
 		if err := tx.Delete(&deleteSchedule).Error; err != nil {
 			log.Println("Database error:", err)
-			errFlag = true
 			return err
 		}
 	
 		if err := tx.Delete(&getScheduleHistory).Error; err != nil {
 			log.Println("Database error:", err)
-			errFlag = true
 			return err
 		}
 		return nil
 	})
 
-	if errFlag {
+	if err != nil {
 		return ctx.SendStatus(500)
 	}
 
