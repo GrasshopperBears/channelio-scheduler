@@ -14,7 +14,15 @@ import (
 	"gorm.io/gorm"
 )
 
-var addRegex = regexp.MustCompile(texts.SCHEDULER_PREFIX + " +" + texts.SCHEDULER_ADD + "(?: +(?P<year>[0-9]{4})년)? +(?P<month>[0-9]{1,2})월 +(?P<date>[0-9]{1,2})일 +(?P<hour>[0-9]{1,2})시 +(?P<minute>[0-9]{1,2})분 (?P<title>.+)")
+var dateRegex = "(?:(?P<year>[0-9]{4})/)?(?:(?P<month>[0-9]{1,2})/)(?P<date>[0-9]{1,2}) +"
+var timeRegexWord = "(?P<hour>[0-9]{1,2}):(?:(?P<minute>[0-9]{1,2}) +)"
+
+var addRegex = regexp.MustCompile(
+	fmt.Sprintf("%s +%s +", texts.SCHEDULER_PREFIX, texts.SCHEDULER_ADD) +
+	dateRegex +
+	fmt.Sprintf("(?:(%s))?", timeRegexWord) +
+	"(?P<title>.+)",
+)
 
 func AddSchedule(ctx *fiber.Ctx, event *structs.WebhookEvent) error {
 	db := models.DB
