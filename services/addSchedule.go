@@ -55,7 +55,7 @@ func AddSchedule(ctx *fiber.Ctx, event *structs.WebhookEvent) error {
 	today := time.Now()
 	if year == 0 {
 		year = today.Year()
-		if month < int(today.Month()) || month == int(today.Month()) { year++ }
+		if month < int(today.Month()) { year++ }
 	}
 
 	datetime := time.Date(year, time.Month(month), date, hour, minute, 0, 0, time.Local)
