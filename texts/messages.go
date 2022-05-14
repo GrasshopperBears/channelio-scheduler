@@ -3,9 +3,9 @@ package texts
 const MESSAGE_ERR_PRFIX string = "오류: "
 
 const MESSAGE_HELP string = "사용할 수 있는 명령어\n" +
-	SCHEDULER_PREFIX + " " + SCHEDULER_ADD + " : 현재 그룹에 일정을 추가합니다\n" +
+	SCHEDULER_PREFIX + " " + SCHEDULER_ADD + " [yyyy/]mm/dd [hh:mm] 일정_이름 : 현재 그룹에 일정을 추가합니다\n" +
 	SCHEDULER_PREFIX + " " + SCHEDULER_GET + " : 현재 그룹에 추가된 일정을 조회합니다\n" +
-	SCHEDULER_PREFIX + " " + SCHEDULER_DELETE + " : 해당 일정을 삭제합니다\n"
+	SCHEDULER_PREFIX + " " + SCHEDULER_DELETE + " 일정_번호 : 해당 일정을 삭제합니다\n"
 
 // Success messeges
 const MESSAGE_ADD_SUCCESS = "일정이 추가되었습니다."
