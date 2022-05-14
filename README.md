@@ -45,6 +45,8 @@ go run main.go
 - 일시와 이름을 기반으로 일정을 생성할 수 있습니다.
 - 대괄호 내부 부분은 생략 가능합니다.
 
+![add](https://user-images.githubusercontent.com/34625313/168444888-53684a22-0657-43e8-8e8a-3047c221e2c6.png)
+
 ### 일정 조회
 
 **형식**
@@ -58,6 +60,8 @@ go run main.go
 - 모든 일정에는 번호가 부여됩니다. 이후 삭제할 때 이 번호가 기준이 됩니다.
 - 지난 일정은 표시되지 않습니다.
 
+![get](https://user-images.githubusercontent.com/34625313/168444850-9f65ce57-9e4b-41e8-b5ba-f189fff14b7f.png)
+
 ### 일정 삭제
 
 **형식**
@@ -68,6 +72,9 @@ go run main.go
 
 - 그룹 내 일정을 번호 기준으로 삭제할 수 있습니다.
 - 일정 삭제에 앞서 일정 조회가 필요합니다. 삭제에 사용될 번호가 필요하기 때문입니다.
+
+![delete](https://user-images.githubusercontent.com/34625313/168444856-923b68e1-bca9-41c0-bae0-36a1a42fc7e9.png)
+
 
 ## 모델
 
