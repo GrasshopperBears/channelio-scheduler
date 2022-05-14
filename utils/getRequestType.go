@@ -6,9 +6,9 @@ import (
 	"server/texts"
 )
 
-var helpRegex, _ = regexp.Compile("^" + texts.SCHEDULER_PREFIX + " +" + texts.SCHEDULER_HELP)
+var helpRegex, _ = regexp.Compile("^" + texts.SCHEDULER_PREFIX + " +" + texts.SCHEDULER_HELP + " *$")
 var addRegex, _ = regexp.Compile("^" + texts.SCHEDULER_PREFIX + " +" + texts.SCHEDULER_ADD)
-var getRegex, _ = regexp.Compile("^" + texts.SCHEDULER_PREFIX + " +" + texts.SCHEDULER_GET)
+var getRegex, _ = regexp.Compile("^" + texts.SCHEDULER_PREFIX + " +" + texts.SCHEDULER_GET + " *$")
 var deleteRegex, _ = regexp.Compile("^" + texts.SCHEDULER_PREFIX + " +" + texts.SCHEDULER_DELETE)
 
 func GetRequestType(text string) structs.RequestType {
