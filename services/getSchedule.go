@@ -12,13 +12,15 @@ import (
 )
 
 func scheduleToString(schedule models.Schedule, idx int) string {
-	scheduleString := fmt.Sprintf("[%d] ", idx)
+	scheduleString := fmt.Sprintf("[%d]   ", idx)
 
 	scheduleDatetime := schedule.Datetime
-	scheduleString += fmt.Sprintf("%d/%d/%d ", scheduleDatetime.Year(), scheduleDatetime.Month(), scheduleDatetime.Day())
+	scheduleString += fmt.Sprintf("%d/%d/%d   ", scheduleDatetime.Year(), scheduleDatetime.Month(), scheduleDatetime.Day())
 
 	if schedule.IsTimeSet {
-		scheduleString += fmt.Sprintf("%d:%d ", scheduleDatetime.Hour(), scheduleDatetime.Minute())
+		scheduleString += fmt.Sprintf("%02d:%02d   ", scheduleDatetime.Hour(), scheduleDatetime.Minute())
+	} else {
+		scheduleString += "------  "
 	}
 	
 	scheduleString += schedule.Title
